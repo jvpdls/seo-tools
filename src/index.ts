@@ -13,6 +13,7 @@ export {
 export { countTextMetrics } from './text/count.js';
 export { createSlug, prepareTextInput } from './text/slugify.js';
 export { analyzeSeoSnippet } from './seo/snippet.js';
+export { normalizeUrl } from './url/normalize.js';
 export type {
   AnalyzeSeoSnippetOptions,
   SeoSnippetAnalysis,
@@ -21,6 +22,11 @@ export type {
   SnippetStatus,
   SnippetWarningCode,
 } from './seo/types.js';
+export type {
+  NormalizedUrlResult,
+  NormalizeUrlOptions,
+  QueryParamValue,
+} from './url/types.js';
 export type {
   CountTextMetricsOptions,
   SlugifyOptions,

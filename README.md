@@ -11,6 +11,7 @@ Type-safe SEO and content utilities for JavaScript and TypeScript projects.
 - Limit generated slugs by word count.
 - Count characters, words, sentences, paragraphs and estimated reading time.
 - Analyze SEO title and meta description snippets.
+- Normalize URLs and paths for technical SEO workflows.
 - Use stable warning codes that can be mapped to any UI language.
 - Import typed ESM utilities with no runtime dependencies.
 
@@ -27,6 +28,7 @@ import {
   analyzeSeoSnippet,
   countTextMetrics,
   createSlug,
+  normalizeUrl,
 } from '@jvpdls/seo-tools';
 
 const slugResult = createSlug({
@@ -55,6 +57,16 @@ const snippet = analyzeSeoSnippet({
 
 console.log(snippet.overallStatus);
 // needs_improvement
+
+const normalized = normalizeUrl({
+  url: 'HTTPS://Example.com/blog/Test-Post/?utm_source=google&id=123#section',
+  removeTrackingParams: true,
+  forceLowercaseUrl: true,
+  removeHash: true,
+});
+
+console.log(normalized.normalizedUrl);
+// https://example.com/blog/test-post/?id=123
 ```
 
 ## Reference
@@ -179,6 +191,45 @@ Current snippet warning codes:
 - `DESCRIPTION_TOO_SHORT`
 - `DESCRIPTION_TOO_LONG`
 - `DESCRIPTION_MISSING_KEYWORD`
+
+### `normalizeUrl(options)`
+
+Normalizes an absolute URL or path and returns useful URL parts for SEO analysis.
+
+```ts
+const result = normalizeUrl({
+  url: 'HTTPS://Example.com/blog/Test-Post/?utm_source=google&utm_medium=cpc&id=123#section',
+  removeTrackingParams: true,
+  forceLowercaseHost: true,
+  forceLowercaseUrl: true,
+  removeHash: true,
+});
+```
+
+Returns:
+
+```ts
+{
+  originalUrl: string;
+  normalizedUrl: string;
+  protocol: string | null;
+  host: string | null;
+  path: string;
+  queryParams: Record<string, string | string[]>;
+  removedParams: string[];
+  urlLowercased: boolean;
+  hashRemoved: boolean;
+}
+```
+
+Options:
+
+- `removeTrackingParams`: removes common tracking params such as `utm_*`, `gclid`, `fbclid`, `msclkid`, `twclid`, and `li_fat_id`.
+- `forceLowercaseHost`: lowercases the host.
+- `forceLowercaseUrl`: lowercases host, path, query params, and hash. This takes precedence over `forceLowercaseHost`.
+- `removeHash`: removes the hash fragment.
+
+For path-only input, `protocol` and `host` return `null`, and `normalizedUrl` remains a path.
 
 ## Text Helpers
 
