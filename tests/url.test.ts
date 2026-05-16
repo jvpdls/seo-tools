@@ -69,6 +69,68 @@ describe('normalizeUrl', () => {
     assert.deepEqual(result.removedParams, ['utm_term']);
   });
 
+  test('removes extended tracking params and wildcard prefixes', () => {
+    const trackingParams = [
+      'fbclid',
+      'gclid',
+      'gclsrc',
+      'utm_custom',
+      '_ga',
+      'mc_cid',
+      'mc_eid',
+      '_bta_tid',
+      '_bta_c',
+      'trk_contact',
+      'gdfms',
+      'gdftrk',
+      'gdffi',
+      '_ke',
+      'sb_referer_host',
+      'mkwid',
+      'pcrid',
+      'ef_id',
+      's_kwcid',
+      'msclkid',
+      'dm_i',
+      'epik',
+      'pk_campaign',
+      'piwik_campaign',
+      'mtm_campaign',
+      'matomo_campaign',
+      'hsa_cam',
+      '_branch_match_id',
+      'mkevt',
+      'mkcid',
+      'mkrid',
+      'campid',
+      'toolid',
+      'customid',
+      'igshid',
+      'si',
+      'sms_source',
+      'WT.mc_id',
+      'WT.nav',
+      'campaign_id',
+      'hootPostID',
+      'wprov',
+      '__s',
+    ];
+    const query = new URLSearchParams([
+      ...trackingParams.map((paramName) => [paramName, 'tracking']),
+      ['id', '123'],
+    ]);
+    const result = normalizeUrl({
+      url: `https://example.com/products?${query.toString()}`,
+      removeTrackingParams: true,
+    });
+
+    assert.equal(result.normalizedUrl, 'https://example.com/products?id=123');
+    assert.deepEqual(result.queryParams, {
+      id: '123',
+    });
+    assert.deepEqual(result.removedParams, trackingParams);
+  });
+
   test('lowercases only the host when forceLowercaseHost is enabled', () => {
     const result = normalizeUrl({
       url: 'https://Example.com/Blog/Post?Name=Joao#Section',

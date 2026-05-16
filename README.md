@@ -224,7 +224,7 @@ Returns:
 
 Options:
 
-- `removeTrackingParams`: removes common tracking params such as `utm_*`, `gclid`, `fbclid`, `msclkid`, `twclid`, and `li_fat_id`.
+- `removeTrackingParams`: removes common tracking params such as `utm_*`, `fbclid`, `gclid`, `_ga`, `mc_cid`, `msclkid`, `pk_*`, `mtm_*`, `matomo_*`, `hsa_*`, `WT.mc_id`, and similar campaign identifiers.
 - `forceLowercaseHost`: lowercases the host.
 - `forceLowercaseUrl`: lowercases host, path, query params, and hash. This takes precedence over `forceLowercaseHost`.
 - `removeHash`: removes the hash fragment.

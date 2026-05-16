@@ -4,25 +4,67 @@ import type {
   QueryParamValue,
 } from './types.js';
 
-const RELATIVE_URL_BASE = 'https://seo-tools.local';
+const RELATIVE_URL_BASE = 'https://placeholder.local';
 const ABSOLUTE_URL_PATTERN = /^[a-z][a-z\d+\-.]*:\/\//i;
 
 const TRACKING_PARAM_NAMES = new Set([
-  'utm_source',
-  'utm_medium',
-  'utm_campaign',
-  'utm_term',
-  'utm_content',
-  'utm_id',
-  'utm_source_platform',
-  'utm_creative_format',
-  'utm_marketing_tactic',
-  'gclid',
+  '__s',
+  '_branch_match_id',
+  '_bta_c',
+  '_bta_tid',
+  '_ga',
+  '_ke',
+  'campaign_id',
+  'campid',
+  'customid',
+  'dm_i',
+  'ef_id',
+  'epik',
   'fbclid',
-  'msclkid',
-  'twclid',
+  'gclid',
+  'gclsrc',
+  'gdffi',
+  'gdfms',
+  'gdftrk',
+  'hootpostid',
   'li_fat_id',
+  'mc_cid',
+  'mc_eid',
+  'mkcid',
+  'mkevt',
+  'mkrid',
+  'mkwid',
+  'msclkid',
+  'pcrid',
+  's_kwcid',
+  'sb_referer_host',
+  'si',
+  'toolid',
+  'twclid',
+  'wprov',
+  'wt.mc_id',
+  'wt.nav',
 ]);
+
+const TRACKING_PARAM_PREFIXES = [
+  'hsa_',
+  'igsh',
+  'matomo_',
+  'mtm_',
+  'piwik_',
+  'pk_',
+  'sms_',
+  'trk_',
+  'utm_',
+];
+
+const hasTrackingPrefix = (paramName: string): boolean => {
+  return TRACKING_PARAM_PREFIXES.some((prefix) => paramName.startsWith(prefix));
+};
+
+const normalizeParamName = (paramName: string): string => {
+  return paramName.trim().toLowerCase();
+};
 
 const addUnique = (values: string[], value: string): void => {
   if (!values.includes(value)) {
@@ -31,7 +73,12 @@ const addUnique = (values: string[], value: string): void => {
 };
 
 const isTrackingParam = (paramName: string): boolean => {
-  return TRACKING_PARAM_NAMES.has(paramName.toLowerCase());
+  const normalizedParamName = normalizeParamName(paramName);
+
+  return (
+    TRACKING_PARAM_NAMES.has(normalizedParamName) ||
+    hasTrackingPrefix(normalizedParamName)
+  );
 };
 
 const getParseTarget = (
