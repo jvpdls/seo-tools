@@ -1,6 +1,6 @@
 {
   "name": "@jvpdls/seo-tools",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Type-safe SEO and content utilities for JavaScript and TypeScript projects.",
   "type": "module",
   "main": "./dist/index.js",
