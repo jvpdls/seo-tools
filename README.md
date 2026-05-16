@@ -1,4 +1,4 @@
-# @jvpdls/seo-tools
+# Technical & On-Page SEO Utilities
 
 Type-safe SEO and content utilities for JavaScript and TypeScript projects.
 
