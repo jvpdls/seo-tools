@@ -5,8 +5,10 @@ export type SnippetOverallStatus = 'ok' | 'needs_improvement';
 export type SnippetWarningCode =
   | 'TITLE_TOO_SHORT'
   | 'TITLE_TOO_LONG'
+  | 'TITLE_MISSING_KEYWORD'
   | 'DESCRIPTION_TOO_SHORT'
-  | 'DESCRIPTION_TOO_LONG';
+  | 'DESCRIPTION_TOO_LONG'
+  | 'DESCRIPTION_MISSING_KEYWORD';
 
 export type AnalyzeSeoSnippetOptions = {
   title: string;

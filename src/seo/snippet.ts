@@ -37,29 +37,33 @@ const getKeywordMatch = (text: string, keyword?: string): boolean => {
 };
 
 const getTitleWarningCodes = (status: SnippetStatus): SnippetWarningCode[] => {
+  const warningCodes: SnippetWarningCode[] = [];
+
   if (status === 'short') {
-    return ['TITLE_TOO_SHORT'];
+    warningCodes.push('TITLE_TOO_SHORT');
   }
 
   if (status === 'long') {
-    return ['TITLE_TOO_LONG'];
+    warningCodes.push('TITLE_TOO_LONG');
   }
 
-  return [];
+  return warningCodes;
 };
 
 const getDescriptionWarningCodes = (
   status: SnippetStatus,
 ): SnippetWarningCode[] => {
+  const warningCodes: SnippetWarningCode[] = [];
+
   if (status === 'short') {
-    return ['DESCRIPTION_TOO_SHORT'];
+    warningCodes.push('DESCRIPTION_TOO_SHORT');
   }
 
   if (status === 'long') {
-    return ['DESCRIPTION_TOO_LONG'];
+    warningCodes.push('DESCRIPTION_TOO_LONG');
   }
 
-  return [];
+  return warningCodes;
 };
 
 export const analyzeSeoSnippet = ({
@@ -79,25 +83,36 @@ export const analyzeSeoSnippet = ({
   );
   const titleHasKeyword = getKeywordMatch(title, keyword);
   const descriptionHasKeyword = getKeywordMatch(description, keyword);
-  const hasKeywordGap =
-    keyword !== undefined &&
-    keyword.trim().length > 0 &&
-    (!titleHasKeyword || !descriptionHasKeyword);
+  const shouldCheckKeyword = keyword !== undefined && keyword.trim().length > 0;
+  const titleWarningCodes = getTitleWarningCodes(titleStatus);
+  const descriptionWarningCodes =
+    getDescriptionWarningCodes(descriptionStatus);
+
+  if (shouldCheckKeyword && !titleHasKeyword) {
+    titleWarningCodes.push('TITLE_MISSING_KEYWORD');
+  }
+
+  if (shouldCheckKeyword && !descriptionHasKeyword) {
+    descriptionWarningCodes.push('DESCRIPTION_MISSING_KEYWORD');
+  }
+
   const hasLengthIssue =
     titleStatus !== 'ok' || descriptionStatus !== 'ok';
+  const hasKeywordGap =
+    shouldCheckKeyword && (!titleHasKeyword || !descriptionHasKeyword);
 
   return {
     title: {
       characters: title.length,
       status: titleStatus,
       hasKeyword: titleHasKeyword,
-      warningCodes: getTitleWarningCodes(titleStatus),
+      warningCodes: titleWarningCodes,
     },
     description: {
       characters: description.length,
       status: descriptionStatus,
       hasKeyword: descriptionHasKeyword,
-      warningCodes: getDescriptionWarningCodes(descriptionStatus),
+      warningCodes: descriptionWarningCodes,
     },
     overallStatus:
       hasLengthIssue || hasKeywordGap ? 'needs_improvement' : 'ok',

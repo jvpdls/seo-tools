@@ -87,7 +87,7 @@ describe('analyzeSeoSnippet', () => {
     assert.equal(result.overallStatus, 'ok');
   });
 
-  test('marks missing keyword usage as needs_improvement without adding length warnings', () => {
+  test('returns warning codes when the provided keyword is missing', () => {
     const result = analyzeSeoSnippet({
       title: 'Content Calendar Template for Agencies',
       description:
@@ -99,7 +99,41 @@ describe('analyzeSeoSnippet', () => {
     assert.equal(result.description.status, 'ok');
     assert.equal(result.title.hasKeyword, false);
     assert.equal(result.description.hasKeyword, false);
+    assert.deepEqual(result.title.warningCodes, ['TITLE_MISSING_KEYWORD']);
+    assert.deepEqual(result.description.warningCodes, [
+      'DESCRIPTION_MISSING_KEYWORD',
+    ]);
+    assert.equal(result.overallStatus, 'needs_improvement');
+  });
+
+  test('returns a description warning when the keyword appears only in the title', () => {
+    const result = analyzeSeoSnippet({
+      title: 'Technical SEO Checklist for SaaS Teams',
+      description:
+        'Use this checklist to review crawling, indexing, metadata, internal links, page templates, and recurring content quality issues.',
+      keyword: 'technical SEO',
+    });
+
+    assert.equal(result.title.hasKeyword, true);
+    assert.equal(result.description.hasKeyword, false);
     assert.deepEqual(result.title.warningCodes, []);
+    assert.deepEqual(result.description.warningCodes, [
+      'DESCRIPTION_MISSING_KEYWORD',
+    ]);
+    assert.equal(result.overallStatus, 'needs_improvement');
+  });
+
+  test('returns a title warning when the keyword appears only in the description', () => {
+    const result = analyzeSeoSnippet({
+      title: 'Search Visibility Checklist for SaaS Teams',
+      description:
+        'Use this technical SEO checklist to review crawling, indexing, metadata, internal links, page templates, and recurring content quality issues.',
+      keyword: 'technical SEO',
+    });
+
+    assert.equal(result.title.hasKeyword, false);
+    assert.equal(result.description.hasKeyword, true);
+    assert.deepEqual(result.title.warningCodes, ['TITLE_MISSING_KEYWORD']);
     assert.deepEqual(result.description.warningCodes, []);
     assert.equal(result.overallStatus, 'needs_improvement');
   });
