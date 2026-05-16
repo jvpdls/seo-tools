@@ -10,6 +10,7 @@ Type-safe SEO and content utilities for JavaScript and TypeScript projects.
 - Optionally remove English and Brazilian Portuguese stopwords.
 - Limit generated slugs by word count.
 - Count characters, words, sentences, paragraphs and estimated reading time.
+- Analyze SEO title and meta description snippets.
 - Use stable warning codes that can be mapped to any UI language.
 - Import typed ESM utilities with no runtime dependencies.
 
@@ -22,7 +23,11 @@ npm install @joaosantos/seo-tools
 ## Usage
 
 ```ts
-import { countTextMetrics, createSlug } from '@joaosantos/seo-tools';
+import {
+  analyzeSeoSnippet,
+  countTextMetrics,
+  createSlug,
+} from '@joaosantos/seo-tools';
 
 const slugResult = createSlug({
   text: 'How to write a clear project brief for clients',
@@ -40,6 +45,16 @@ const metrics = countTextMetrics({
 
 console.log(metrics.words);
 // 10
+
+const snippet = analyzeSeoSnippet({
+  title: 'How to write a clear project brief',
+  description:
+    'Learn how to create a clear project brief that helps clients understand scope, timelines, and next steps.',
+  keyword: 'project brief',
+});
+
+console.log(snippet.overallStatus);
+// needs_improvement
 ```
 
 ## Reference
@@ -108,6 +123,60 @@ countTextMetrics({
   wordsPerMinute: 250,
 });
 ```
+
+### `analyzeSeoSnippet(options)`
+
+Analyzes a title and meta description using simple SEO guidelines.
+
+```ts
+const snippet = analyzeSeoSnippet({
+  title: 'Project Brief Template for Agencies',
+  description:
+    'Use this project brief template to align scope, timelines, goals, stakeholders, and next steps before client work begins.',
+  keyword: 'project brief',
+});
+```
+
+Returns:
+
+```ts
+{
+  title: {
+    characters: number;
+    status: 'short' | 'ok' | 'long';
+    hasKeyword: boolean;
+    warningCodes: SnippetWarningCode[];
+  };
+  description: {
+    characters: number;
+    status: 'short' | 'ok' | 'long';
+    hasKeyword: boolean;
+    warningCodes: SnippetWarningCode[];
+  };
+  overallStatus: 'ok' | 'needs_improvement';
+}
+```
+
+Title status uses these character ranges:
+
+- `short`: fewer than 30 characters
+- `ok`: 30 to 54 characters
+- `long`: 55 characters or more
+
+Meta description status uses these character ranges:
+
+- `short`: fewer than 120 characters
+- `ok`: 120 to 154 characters
+- `long`: 155 characters or more
+
+The upper limits intentionally stay below 55 characters for titles and below 155 characters for meta descriptions to leave a margin for search engines that measure snippets by pixel width.
+
+Current snippet warning codes:
+
+- `TITLE_TOO_SHORT`
+- `TITLE_TOO_LONG`
+- `DESCRIPTION_TOO_SHORT`
+- `DESCRIPTION_TOO_LONG`
 
 ## Text Helpers
 
