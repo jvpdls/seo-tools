@@ -11,6 +11,7 @@ Type-safe SEO and content utilities for JavaScript and TypeScript projects.
 - Limit generated slugs by word count.
 - Count characters, words, sentences, paragraphs and estimated reading time.
 - Analyze SEO title and meta description snippets.
+- Analyze HTML heading structure.
 - Normalize URLs and paths for technical SEO workflows.
 - Use stable warning codes that can be mapped to any UI language.
 - Import typed ESM utilities with no runtime dependencies.
@@ -26,6 +27,7 @@ npm install @jvpdls/seo-tools
 ```ts
 import {
   analyzeSeoSnippet,
+  analyzeHeadings,
   countTextMetrics,
   createSlug,
   normalizeUrl,
@@ -57,6 +59,13 @@ const snippet = analyzeSeoSnippet({
 
 console.log(snippet.overallStatus);
 // needs_improvement
+
+const headingStructure = analyzeHeadings({
+  html: '<h1>How to write a clear project brief</h1><h2>What to include</h2>',
+});
+
+console.log(headingStructure.hasH1);
+// true
 
 const normalized = normalizeUrl({
   url: 'HTTPS://Example.com/blog/Test-Post/?utm_source=google&id=123#section',
@@ -191,6 +200,38 @@ Current snippet warning codes:
 - `DESCRIPTION_TOO_SHORT`
 - `DESCRIPTION_TOO_LONG`
 - `DESCRIPTION_MISSING_KEYWORD`
+
+### `analyzeHeadings(options)`
+
+Extracts H1-H6 headings from an HTML string and analyzes the page heading structure.
+
+```ts
+const result = analyzeHeadings({
+  html: '<h1>How to write a clear project brief</h1><h2>What to include</h2><h3>Scope and timeline</h3>',
+});
+```
+
+Returns:
+
+```ts
+{
+  hasH1: boolean;
+  h1Count: number;
+  hasMultipleH1: boolean;
+  hasSkippedLevels: boolean;
+  headings: Array<{
+    level: 1 | 2 | 3 | 4 | 5 | 6;
+    text: string;
+  }>;
+  warningCodes: HeadingWarningCode[];
+}
+```
+
+Current heading warning codes:
+
+- `MISSING_H1`
+- `MULTIPLE_H1`
+- `SKIPPED_HEADING_LEVEL`
 
 ### `normalizeUrl(options)`
 
