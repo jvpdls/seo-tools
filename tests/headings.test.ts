@@ -115,4 +115,61 @@ describe('analyzeHeadings', () => {
       },
     ]);
   });
+
+  test('extracts messy headings with attributes and flags skipped levels', () => {
+    const result = analyzeHeadings({
+      html: [
+        '<h1 id="main" class="hero-title" style="font-size: 42px">Main guide</h1>',
+        '<section>',
+        '<h2 class="section-title">Planning</h2>',
+        '<h2 id="research" style="color: red">Research</h2>',
+        '<h5 class="deep" data-track="true">Too deep too soon</h5>',
+        '<h3 style="margin: 0"><span>Back to basics</span></h3>',
+        '<h6 id="appendix">Appendix</h6>',
+        '<h3 class="faq">FAQ</h3>',
+        '<h2 style="font-weight: 700">Summary</h2>',
+        '</section>',
+      ].join(''),
+    });
+
+    assert.equal(result.hasH1, true);
+    assert.equal(result.h1Count, 1);
+    assert.equal(result.hasMultipleH1, false);
+    assert.equal(result.hasSkippedLevels, true);
+    assert.deepEqual(result.headings, [
+      {
+        level: 1,
+        text: 'Main guide',
+      },
+      {
+        level: 2,
+        text: 'Planning',
+      },
+      {
+        level: 2,
+        text: 'Research',
+      },
+      {
+        level: 5,
+        text: 'Too deep too soon',
+      },
+      {
+        level: 3,
+        text: 'Back to basics',
+      },
+      {
+        level: 6,
+        text: 'Appendix',
+      },
+      {
+        level: 3,
+        text: 'FAQ',
+      },
+      {
+        level: 2,
+        text: 'Summary',
+      },
+    ]);
+    assert.deepEqual(result.warningCodes, ['SKIPPED_HEADING_LEVEL']);
+  });
 });
