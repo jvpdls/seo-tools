@@ -1,8 +1,8 @@
-# @joaosantos/seo-tools
+# @jvpdls/seo-tools
 
 Type-safe SEO and content utilities for JavaScript and TypeScript projects.
 
-`@joaosantos/seo-tools` provides small, dependency-free helpers for common SEO and editorial workflows such as slug generation, text normalization and basic content metrics.
+`@jvpdls/seo-tools` provides small, dependency-free helpers for common SEO and editorial workflows such as slug generation, text normalization and basic content metrics.
 
 ## Features
 
@@ -17,7 +17,7 @@ Type-safe SEO and content utilities for JavaScript and TypeScript projects.
 ## Installation
 
 ```bash
-npm install @joaosantos/seo-tools
+npm install @jvpdls/seo-tools
 ```
 
 ## Usage
@@ -27,7 +27,7 @@ import {
   analyzeSeoSnippet,
   countTextMetrics,
   createSlug,
-} from '@joaosantos/seo-tools';
+} from '@jvpdls/seo-tools';
 
 const slugResult = createSlug({
   text: 'How to write a clear project brief for clients',

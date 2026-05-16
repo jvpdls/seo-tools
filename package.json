@@ -1,5 +1,5 @@
 {
-  "name": "@joaosantos/seo-tools",
+  "name": "@jvpdls/seo-tools",
   "version": "0.1.0",
   "description": "Type-safe SEO and content utilities for JavaScript and TypeScript projects.",
   "type": "module",
