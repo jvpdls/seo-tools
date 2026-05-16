@@ -1,0 +1,53 @@
+{
+  "name": "@joaosantos/seo-tools",
+  "version": "0.1.0",
+  "description": "Type-safe SEO and content utilities for JavaScript and TypeScript projects.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsc",
+    "test": "node --import tsx --test tests/**/*.test.ts",
+    "prepack": "npm run build"
+  },
+  "keywords": [
+    "seo",
+    "slugify",
+    "text",
+    "content",
+    "web"
+  ],
+  "author": "João Santos",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jvpdls/seo-tools.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jvpdls/seo-tools/issues"
+  },
+  "homepage": "https://github.com/jvpdls/seo-tools#readme",
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "devDependencies": {
+    "@types/node": "^25.8.0",
+    "tsx": "^4.22.0",
+    "typescript": "^6.0.3"
+  }
+}
