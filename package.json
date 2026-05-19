@@ -9,6 +9,22 @@
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
+    },
+    "./text": {
+      "types": "./dist/text/index.d.ts",
+      "import": "./dist/text/index.js"
+    },
+    "./headings": {
+      "types": "./dist/headings/index.d.ts",
+      "import": "./dist/headings/index.js"
+    },
+    "./url": {
+      "types": "./dist/url/index.d.ts",
+      "import": "./dist/url/index.js"
+    },
+    "./serp": {
+      "types": "./dist/serp/index.d.ts",
+      "import": "./dist/serp/index.js"
     }
   },
   "files": [

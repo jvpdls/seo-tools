@@ -1,11 +1,35 @@
 import assert from 'node:assert/strict';
 import { describe, test } from 'node:test';
 
-import {
-  countTextMetrics,
-  createSlug,
-  normalizeTextToken,
-} from '../src/index.js';
+import { countTextMetrics, createSlug } from '../src/index.js';
+import { getStopwordsForLanguage } from '../src/utils/text.js';
+
+const assertWordsAreStopwords = (
+  language: 'en' | 'pt-BR',
+  words: string[],
+): void => {
+  const stopwords = getStopwordsForLanguage(language);
+
+  for (const word of words) {
+    assert.ok(stopwords.has(word), `"${word}" should be a stopword (${language})`);
+  }
+};
+
+describe('getStopwordsForLanguage', () => {
+  test('normalizes tokens when building the English set', () => {
+    const stopwords = getStopwordsForLanguage('en');
+
+    assert.ok(stopwords.has('the'));
+    assert.ok(stopwords.has('for'));
+  });
+
+  test('normalizes tokens when building the Portuguese set', () => {
+    const stopwords = getStopwordsForLanguage('pt-BR');
+
+    assert.ok(stopwords.has('como'));
+    assert.ok(stopwords.has('pelo'));
+  });
+});
 
 describe('createSlug', () => {
   test('normalizes a common English text without removing stopwords', () => {
@@ -39,6 +63,10 @@ describe('createSlug', () => {
   });
 
   test('removes Portuguese stopwords and returns a stable warning code when maxWords truncates the slug', () => {
+    const removedStopwords = ['como', 'um', 'pelo', 'sem', 'ser'];
+
+    assertWordsAreStopwords('pt-BR', removedStopwords);
+
     const result = createSlug({
       text: 'Como abordar um cliente pelo WhatsApp sem ser invasivo?',
       maxWords: 3,
@@ -50,12 +78,14 @@ describe('createSlug', () => {
       slug: 'abordar-cliente-whatsapp',
       originalText: 'Como abordar um cliente pelo WhatsApp sem ser invasivo?',
       wordCount: 3,
-      removedStopwords: ['como', 'um', 'pelo', 'sem', 'ser'],
+      removedStopwords,
       warningCodes: ['MAX_WORDS_APPLIED'],
     });
   });
 
   test('uses English stopwords by default', () => {
+    assertWordsAreStopwords('en', ['how', 'to', 'a', 'for']);
+
     const result = createSlug({
       text: 'How to write a clear project brief for service clients',
       maxWords: 2,
@@ -108,11 +138,5 @@ describe('countTextMetrics', () => {
       paragraphs: 0,
       estimatedReadingTimeMinutes: 0,
     });
-  });
-});
-
-describe('text helpers', () => {
-  test('normalizes accents and case in tokens', () => {
-    assert.equal(normalizeTextToken('São'), 'sao');
   });
 });

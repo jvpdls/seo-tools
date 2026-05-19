@@ -1,40 +1,4 @@
-export {
-  countNonWhitespaceCharacters,
-  countParagraphs,
-  countSentences,
-  countWords,
-  estimateReadingTimeMinutes,
-  getSlugWords,
-  joinSlugWords,
-  normalizeTextToken,
-  normalizeWhitespace,
-  removeDiacritics,
-} from './utils/text.js';
-export { countTextMetrics } from './text/count.js';
-export { createSlug, prepareTextInput } from './text/slugify.js';
-export { analyzeHeadings } from './headings/analyze.js';
-export { analyzeSeoSnippet } from './seo/snippet.js';
-export { normalizeUrl } from './url/normalize.js';
-export type {
-  AnalyzeHeadingsOptions,
-  HeadingItem,
-  HeadingLevel,
-  HeadingsAnalysis,
-  HeadingWarningCode,
-} from './headings/types.js';
-export type {
-  AnalyzeSeoSnippetOptions,
-  SeoSnippetAnalysis,
-  SnippetOverallStatus,
-  SnippetPartAnalysis,
-  SnippetStatus,
-  SnippetWarningCode,
-} from './seo/types.js';
-export type {
-  NormalizedUrlResult,
-  NormalizeUrlOptions,
-  QueryParamValue,
-} from './url/types.js';
+export { countTextMetrics, createSlug } from './text/index.js';
 export type {
   CountTextMetricsOptions,
   SlugifyOptions,
@@ -42,4 +6,30 @@ export type {
   SlugifyWarningCode,
   TextCountMetrics,
   TextInputLanguage,
-} from './text/types.js';
+} from './text/index.js';
+
+export { analyzeHeadings } from './headings/index.js';
+export type {
+  AnalyzeHeadingsOptions,
+  HeadingItem,
+  HeadingLevel,
+  HeadingsAnalysis,
+  HeadingWarningCode,
+} from './headings/index.js';
+
+export { normalizeUrl } from './url/index.js';
+export type {
+  NormalizedUrlResult,
+  NormalizeUrlOptions,
+  QueryParamValue,
+} from './url/index.js';
+
+export { analyzeSeoSnippet } from './serp/index.js';
+export type {
+  AnalyzeSeoSnippetOptions,
+  SeoSnippetAnalysis,
+  SnippetOverallStatus,
+  SnippetPartAnalysis,
+  SnippetStatus,
+  SnippetWarningCode,
+} from './serp/index.js';

@@ -1,14 +1,13 @@
 import {
   getSlugWords,
+  getStopwordsForLanguage,
   joinSlugWords,
   normalizeWhitespace,
 } from '../utils/text.js';
 
-import { getStopwordsForLanguage } from './stopwords.js';
-
 import type { SlugifyOptions, SlugifyResult } from './types.js';
 
-export const prepareTextInput = (text: string): string => {
+const prepareTextInput = (text: string): string => {
   return normalizeWhitespace(text);
 };
 
