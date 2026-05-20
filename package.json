@@ -1,7 +1,7 @@
 {
   "name": "@jvpdls/seo-tools",
-  "version": "0.1.1",
-  "description": "Type-safe SEO utilities for JavaScript and TypeScript: slugs, SERP meta, headings, keyword density, URL normalization, UTM builder, and HTML link analysis. Zero dependencies, ESM.",
+  "version": "0.2.0",
+  "description": "Type-safe SEO utilities for JavaScript and TypeScript: slugs, SERP meta, heading tags, keyword density, URL normalization, UTM builder, and HTML link analysis. Zero dependencies, ESM.",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",

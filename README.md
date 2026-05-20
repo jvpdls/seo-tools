@@ -139,6 +139,17 @@ import { countLinks } from '@jvpdls/seo-tools/html';
 
 All analyzers return **`warningCodes`** — stable string enums you localize in the app layer, not in the library.
 
+## Changelog
+
+### 0.2.0
+
+- Domain-based layout (`text`, `serp`, `headings`, `url`, `html` subpaths)
+- HTML utilities: `cleanHtml`, `countLinks`
+- Text: `analyzeKeywordDensity`
+- URL: `buildUtmUrl`
+- SERP: `buildPageTitle`
+- Per-domain API docs in [`docs/`](./docs/README.md)
+
 ## Development
 
 ```bash
