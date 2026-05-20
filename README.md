@@ -1,4 +1,4 @@
-# @jvpdls/seo-tools
+# Technical & On-Page SEO Utilities | @jvpdls/seo-tools
 
 Type-safe, dependency-free SEO utilities for JavaScript and TypeScript — slugs, SERP checks, heading audits, URL normalization, and HTML link analysis.
 
