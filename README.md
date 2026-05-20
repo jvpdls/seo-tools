@@ -141,6 +141,10 @@ All analyzers return **`warningCodes`** — stable string enums you localize in 
 
 ## Changelog
 
+### 0.2.1
+
+- README: clearer project title for GitHub and npm discovery
+
 ### 0.2.0
 
 - Domain-based layout (`text`, `serp`, `headings`, `url`, `html` subpaths)
