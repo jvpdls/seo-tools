@@ -1,295 +1,149 @@
-# Technical & On-Page SEO Utilities
+# @jvpdls/seo-tools
 
-Type-safe SEO and content utilities for JavaScript and TypeScript projects.
+Type-safe, dependency-free SEO utilities for JavaScript and TypeScript — slugs, SERP checks, heading audits, URL normalization, and HTML link analysis.
 
-`@jvpdls/seo-tools` provides small, dependency-free helpers for common SEO and editorial workflows such as slug generation, text normalization and basic content metrics.
+Built for **CMS plugins**, **content editors**, **marketing dashboards**, and **CLI tools** that need predictable outputs and stable warning codes (map them to any UI language).
 
-## Features
+[![npm version](https://img.shields.io/npm/v/@jvpdls/seo-tools)](https://www.npmjs.com/package/@jvpdls/seo-tools)
+[![license](https://img.shields.io/npm/l/@jvpdls/seo-tools)](./LICENSE)
 
-- Generate lowercase, accent-free, URL-friendly slugs.
-- Optionally remove English and Brazilian Portuguese stopwords.
-- Limit generated slugs by word count.
-- Count characters, words, sentences, paragraphs and estimated reading time.
-- Analyze SEO title and meta description snippets.
-- Analyze HTML heading structure.
-- Normalize URLs and paths for technical SEO workflows.
-- Use stable warning codes that can be mapped to any UI language.
-- Import typed ESM utilities with no runtime dependencies.
-
-## Installation
+## Install
 
 ```bash
 npm install @jvpdls/seo-tools
 ```
 
-## Usage
+Requires **Node.js 18+**. ESM only. Zero runtime dependencies.
+
+## Quick start
+
+Ship a slug, validate a SERP snippet, and normalize a campaign URL in a few lines:
 
 ```ts
 import {
-  analyzeSeoSnippet,
-  analyzeHeadings,
-  countTextMetrics,
+  analyzeSerpSnippet,
+  buildUtmUrl,
   createSlug,
   normalizeUrl,
 } from '@jvpdls/seo-tools';
 
-const slugResult = createSlug({
+// URL-ready slug for a blog post
+const { slug } = createSlug({
   text: 'How to write a clear project brief for clients',
   maxWords: 6,
   removeStopwords: true,
-  inputLanguage: 'en',
 });
+// → "write-clear-project-brief-clients"
 
-console.log(slugResult.slug);
-// write-clear-project-brief-clients
-
-const metrics = countTextMetrics({
-  text: 'Learn how to create a professional quote for service clients.',
-});
-
-console.log(metrics.words);
-// 10
-
-const snippet = analyzeSeoSnippet({
+// On-page SEO feedback before publish
+const serp = analyzeSerpSnippet({
   title: 'How to write a clear project brief',
   description:
-    'Learn how to create a clear project brief that helps clients understand scope, timelines, and next steps.',
+    'Learn how to create a project brief that aligns scope, timelines, and next steps.',
   keyword: 'project brief',
 });
+// serp.overallStatus → "ok" | "needs_improvement"
 
-console.log(snippet.overallStatus);
-// needs_improvement
-
-const headingStructure = analyzeHeadings({
-  html: '<h1>How to write a clear project brief</h1><h2>What to include</h2>',
-});
-
-console.log(headingStructure.hasH1);
-// true
-
-const normalized = normalizeUrl({
-  url: 'HTTPS://Example.com/blog/Test-Post/?utm_source=google&id=123#section',
+// Clean URL for audits or canonical tags
+const { normalizedUrl } = normalizeUrl({
+  url: 'HTTPS://Example.com/blog/?utm_source=google&id=1#top',
   removeTrackingParams: true,
   forceLowercaseUrl: true,
   removeHash: true,
 });
+// → "https://example.com/blog/?id=1"
 
-console.log(normalized.normalizedUrl);
-// https://example.com/blog/test-post/?id=123
-```
-
-## Reference
-
-### `createSlug(options)`
-
-Creates a URL-friendly slug from a text input.
-
-```ts
-const result = createSlug({
-  text: 'Quick budget for Sao Paulo 2026!!!',
-  removeStopwords: false,
-  inputLanguage: 'en',
+// Trackable link for newsletters
+const campaign = buildUtmUrl({
+  url: 'https://example.com/guide',
+  params: {
+    utm_source: 'newsletter',
+    utm_medium: 'email',
+    utm_campaign: 'brief-guide',
+  },
 });
+// campaign.builtUrl → "https://example.com/guide?utm_source=newsletter&utm_medium=email&utm_campaign=brief-guide"
+// campaign.addedParams → ["utm_source", "utm_medium", "utm_campaign"]
+// campaign.skippedParams → []
 ```
 
-Returns:
+Import only what you need via [domain subpaths](#domain-imports) or the [full API table](#api-overview) below.
+
+## API overview
+
+### Text · [text.md](./docs/text.md)
+
+| Function | One-line purpose |
+| --- | --- |
+| [`createSlug`](./docs/text.md#createslugoptions) | Accent-free, stopword-aware URL slugs |
+| [`countTextMetrics`](./docs/text.md#counttextmetricsoptions) | Words, sentences, reading time |
+| [`analyzeKeywordDensity`](./docs/text.md#analyzekeyworddensityoptions) | Keyword frequency and density warnings |
+
+### SERP · [serp.md](./docs/serp.md)
+
+| Function | One-line purpose |
+| --- | --- |
+| [`analyzeSerpSnippet`](./docs/serp.md#analyzesserpsnippetoptions) | Title & meta length + keyword checks |
+| [`buildPageTitle`](./docs/serp.md#buildpagetitleoptions) | Branded `<title>` with length warnings |
+
+### Headings · [headings.md](./docs/headings.md)
+
+| Function | One-line purpose |
+| --- | --- |
+| [`extractHeadings`](./docs/headings.md#extractheadingshtml) | H1–H6 list in document order |
+| [`analyzeHeadings`](./docs/headings.md#analyzeheadingsoptions) | Missing/multiple H1, skipped levels |
+
+### URL · [url.md](./docs/url.md)
+
+| Function | One-line purpose |
+| --- | --- |
+| [`normalizeUrl`](./docs/url.md#normalizeurloptions) | Canonical URLs, strip tracking params |
+| [`buildUtmUrl`](./docs/url.md#buildutmurloptions) | Append UTM / campaign query params |
+
+### HTML · [html.md](./docs/html.md)
+
+| Function | One-line purpose |
+| --- | --- |
+| [`cleanHtml`](./docs/html.md#cleanhtmloptions) | Strip classes, ids, inline styles |
+| [`countLinks`](./docs/html.md#countlinksoptions) | Internal, external, nofollow link counts |
+
+Full reference: **[docs/](./docs/README.md)**
+
+## Domain imports
+
+Tree-shake by domain when bundling editors or microservices:
 
 ```ts
-{
-  slug: string;
-  originalText: string;
-  wordCount: number;
-  removedStopwords: string[];
-  warningCodes: SlugifyWarningCode[];
-}
+import { createSlug } from '@jvpdls/seo-tools/text';
+import { analyzeSerpSnippet } from '@jvpdls/seo-tools/serp';
+import { analyzeHeadings } from '@jvpdls/seo-tools/headings';
+import { normalizeUrl } from '@jvpdls/seo-tools/url';
+import { countLinks } from '@jvpdls/seo-tools/html';
 ```
 
-Supported input languages:
+## Why these utilities?
 
-- `en`
-- `pt-BR`
+| Need | Utility |
+| --- | --- |
+| Publish-ready permalink | `createSlug` |
+| Editor word count & reading time | `countTextMetrics` |
+| Avoid thin or stuffed copy | `analyzeKeywordDensity` |
+| Pre-flight title & description | `analyzeSerpSnippet` |
+| Consistent branded titles | `buildPageTitle` |
+| Content outline / TOC | `extractHeadings` |
+| On-page hierarchy QA | `analyzeHeadings` |
+| Dedupe URLs in crawls | `normalizeUrl` |
+| Campaign links | `buildUtmUrl` |
+| Sanitize pasted HTML | `cleanHtml` |
+| Internal linking reports | `countLinks` |
 
-Current warning codes:
-
-- `MAX_WORDS_APPLIED`: the generated slug was truncated because `maxWords` was reached.
-
-### `countTextMetrics(options)`
-
-Returns basic text metrics.
-
-```ts
-const metrics = countTextMetrics({
-  text: 'First sentence.\n\nSecond paragraph!',
-});
-```
-
-Returns:
-
-```ts
-{
-  characters: number;
-  charactersWithoutSpaces: number;
-  words: number;
-  sentences: number;
-  paragraphs: number;
-  estimatedReadingTimeMinutes: number;
-}
-```
-
-By default, reading time uses `200` words per minute. You can override it with `wordsPerMinute`.
-
-```ts
-countTextMetrics({
-  text: 'A long article...',
-  wordsPerMinute: 250,
-});
-```
-
-### `analyzeSeoSnippet(options)`
-
-Analyzes a title and meta description using simple SEO guidelines.
-
-```ts
-const snippet = analyzeSeoSnippet({
-  title: 'Project Brief Template for Agencies',
-  description:
-    'Use this project brief template to align scope, timelines, goals, stakeholders, and next steps before client work begins.',
-  keyword: 'project brief',
-});
-```
-
-Returns:
-
-```ts
-{
-  title: {
-    characters: number;
-    status: 'short' | 'ok' | 'long';
-    hasKeyword: boolean;
-    warningCodes: SnippetWarningCode[];
-  };
-  description: {
-    characters: number;
-    status: 'short' | 'ok' | 'long';
-    hasKeyword: boolean;
-    warningCodes: SnippetWarningCode[];
-  };
-  overallStatus: 'ok' | 'needs_improvement';
-}
-```
-
-Title status uses these character ranges:
-
-- `short`: fewer than 30 characters
-- `ok`: 30 to 54 characters
-- `long`: 55 characters or more
-
-Meta description status uses these character ranges:
-
-- `short`: fewer than 120 characters
-- `ok`: 120 to 154 characters
-- `long`: 155 characters or more
-
-The upper limits intentionally stay below 55 characters for titles and below 155 characters for meta descriptions to leave a margin for search engines that measure snippets by pixel width.
-
-Current snippet warning codes:
-
-- `TITLE_TOO_SHORT`
-- `TITLE_TOO_LONG`
-- `TITLE_MISSING_KEYWORD`
-- `DESCRIPTION_TOO_SHORT`
-- `DESCRIPTION_TOO_LONG`
-- `DESCRIPTION_MISSING_KEYWORD`
-
-### `analyzeHeadings(options)`
-
-Extracts H1-H6 headings from an HTML string and analyzes the page heading structure.
-
-```ts
-const result = analyzeHeadings({
-  html: '<h1>How to write a clear project brief</h1><h2>What to include</h2><h3>Scope and timeline</h3>',
-});
-```
-
-Returns:
-
-```ts
-{
-  hasH1: boolean;
-  h1Count: number;
-  hasMultipleH1: boolean;
-  hasSkippedLevels: boolean;
-  headings: Array<{
-    level: 1 | 2 | 3 | 4 | 5 | 6;
-    text: string;
-  }>;
-  warningCodes: HeadingWarningCode[];
-}
-```
-
-Current heading warning codes:
-
-- `MISSING_H1`
-- `MULTIPLE_H1`
-- `SKIPPED_HEADING_LEVEL`
-
-### `normalizeUrl(options)`
-
-Normalizes an absolute URL or path and returns useful URL parts for SEO analysis.
-
-```ts
-const result = normalizeUrl({
-  url: 'HTTPS://Example.com/blog/Test-Post/?utm_source=google&utm_medium=cpc&id=123#section',
-  removeTrackingParams: true,
-  forceLowercaseHost: true,
-  forceLowercaseUrl: true,
-  removeHash: true,
-});
-```
-
-Returns:
-
-```ts
-{
-  originalUrl: string;
-  normalizedUrl: string;
-  protocol: string | null;
-  host: string | null;
-  path: string;
-  queryParams: Record<string, string | string[]>;
-  removedParams: string[];
-  urlLowercased: boolean;
-  hashRemoved: boolean;
-}
-```
-
-Options:
-
-- `removeTrackingParams`: removes common tracking params such as `utm_*`, `fbclid`, `gclid`, `_ga`, `mc_cid`, `msclkid`, `pk_*`, `mtm_*`, `matomo_*`, `hsa_*`, `WT.mc_id`, and similar campaign identifiers.
-- `forceLowercaseHost`: lowercases the host.
-- `forceLowercaseUrl`: lowercases host, path, query params, and hash. This takes precedence over `forceLowercaseHost`.
-- `removeHash`: removes the hash fragment.
-
-For path-only input, `protocol` and `host` return `null`, and `normalizedUrl` remains a path.
-
-## Text Helpers
-
-The package also exports lower-level helpers:
-
-- `normalizeWhitespace`
-- `removeDiacritics`
-- `normalizeTextToken`
-- `getSlugWords`
-- `joinSlugWords`
-- `countNonWhitespaceCharacters`
-- `countWords`
-- `countSentences`
-- `countParagraphs`
-- `estimateReadingTimeMinutes`
+All analyzers return **`warningCodes`** — stable string enums you localize in the app layer, not in the library.
 
 ## Development
 
 ```bash
+git clone https://github.com/jvpdls/seo-tools.git
+cd seo-tools
 npm install
 npm run build
 npm test
@@ -297,4 +151,4 @@ npm test
 
 ## License
 
-MIT © João Santos
+MIT © [João Santos](https://github.com/jvpdls)

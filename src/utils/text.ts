@@ -1,4 +1,4 @@
-import type { TextInputLanguage } from '../text/types.js';
+import type { TextInputLanguage } from '../domains/text/types.js';
 
 export const normalizeWhitespace = (text: string): string => {
   return text.trim().replace(/\s+/g, ' ');
@@ -29,8 +29,12 @@ export const countNonWhitespaceCharacters = (text: string): number => {
   return text.replace(/\s/gu, '').length;
 };
 
+export const tokenizeWords = (text: string): string[] => {
+  return text.match(/[\p{L}\p{N}]+(?:['’][\p{L}\p{N}]+)?/gu) ?? [];
+};
+
 export const countWords = (text: string): number => {
-  return text.match(/[\p{L}\p{N}]+(?:['’][\p{L}\p{N}]+)?/gu)?.length ?? 0;
+  return tokenizeWords(text).length;
 };
 
 export const countSentences = (text: string): number => {

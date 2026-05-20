@@ -1,35 +1,57 @@
-export { countTextMetrics, createSlug } from './text/index.js';
+export { analyzeKeywordDensity, countTextMetrics, createSlug } from './domains/text/index.js';
 export type {
+  AnalyzeKeywordDensityOptions,
+  AnalyzeKeywordDensityResult,
   CountTextMetricsOptions,
+  KeywordDensityAnalysisWarningCode,
+  KeywordDensityMetrics,
+  KeywordDensityThresholds,
+  KeywordDensityWarningCode,
   SlugifyOptions,
   SlugifyResult,
   SlugifyWarningCode,
   TextCountMetrics,
   TextInputLanguage,
-} from './text/index.js';
+} from './domains/text/index.js';
 
-export { analyzeHeadings } from './headings/index.js';
+export { analyzeHeadings, extractHeadings } from './domains/headings/index.js';
 export type {
   AnalyzeHeadingsOptions,
   HeadingItem,
   HeadingLevel,
   HeadingsAnalysis,
   HeadingWarningCode,
-} from './headings/index.js';
+} from './domains/headings/index.js';
 
-export { normalizeUrl } from './url/index.js';
+export { buildUtmUrl, normalizeUrl } from './domains/url/index.js';
 export type {
+  BuildUtmUrlOptions,
+  BuildUtmUrlResult,
   NormalizedUrlResult,
   NormalizeUrlOptions,
   QueryParamValue,
-} from './url/index.js';
+  UtmParams,
+} from './domains/url/index.js';
 
-export { analyzeSeoSnippet } from './serp/index.js';
+export { cleanHtml, countLinks } from './domains/html/index.js';
 export type {
-  AnalyzeSeoSnippetOptions,
-  SeoSnippetAnalysis,
+  CleanHtmlOptions,
+  CleanHtmlResult,
+  CleanHtmlWarningCode,
+  CountLinksOptions,
+  CountLinksResult,
+  CountLinksWarningCode,
+} from './domains/html/index.js';
+
+export { analyzeSerpSnippet, buildPageTitle } from './domains/serp/index.js';
+export type {
+  AnalyzeSerpSnippetOptions,
+  BuildPageTitleOptions,
+  BuildPageTitleResult,
+  PageTitleWarningCode,
+  SerpSnippetAnalysis,
   SnippetOverallStatus,
   SnippetPartAnalysis,
   SnippetStatus,
   SnippetWarningCode,
-} from './serp/index.js';
+} from './domains/serp/index.js';

@@ -10,7 +10,7 @@ export type SnippetWarningCode =
   | 'DESCRIPTION_TOO_LONG'
   | 'DESCRIPTION_MISSING_KEYWORD';
 
-export type AnalyzeSeoSnippetOptions = {
+export type AnalyzeSerpSnippetOptions = {
   title: string;
   description: string;
   keyword?: string;
@@ -23,8 +23,27 @@ export type SnippetPartAnalysis = {
   warningCodes: SnippetWarningCode[];
 };
 
-export type SeoSnippetAnalysis = {
+export type SerpSnippetAnalysis = {
   title: SnippetPartAnalysis;
   description: SnippetPartAnalysis;
   overallStatus: SnippetOverallStatus;
+};
+
+export type PageTitleWarningCode =
+  | 'TITLE_TOO_SHORT'
+  | 'TITLE_TOO_LONG'
+  | 'TITLE_TRUNCATED';
+
+export type BuildPageTitleOptions = {
+  pageTitle: string;
+  brand?: string;
+  separator?: string;
+  brandPosition?: 'suffix' | 'prefix';
+  maxLength?: number;
+};
+
+export type BuildPageTitleResult = {
+  title: string;
+  characters: number;
+  warningCodes: PageTitleWarningCode[];
 };

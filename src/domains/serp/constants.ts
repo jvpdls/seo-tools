@@ -1,0 +1,3 @@
+export const TITLE_MIN_CHARACTERS = 30;
+export const TITLE_MAX_IDEAL_CHARACTERS = 54;
+export const DEFAULT_PAGE_TITLE_SEPARATOR = ' | ';

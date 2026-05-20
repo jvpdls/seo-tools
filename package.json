@@ -1,7 +1,7 @@
 {
   "name": "@jvpdls/seo-tools",
   "version": "0.1.1",
-  "description": "Type-safe SEO and content utilities for JavaScript and TypeScript projects.",
+  "description": "Type-safe SEO utilities for JavaScript and TypeScript: slugs, SERP meta, headings, keyword density, URL normalization, UTM builder, and HTML link analysis. Zero dependencies, ESM.",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -11,24 +11,29 @@
       "import": "./dist/index.js"
     },
     "./text": {
-      "types": "./dist/text/index.d.ts",
-      "import": "./dist/text/index.js"
+      "types": "./dist/domains/text/index.d.ts",
+      "import": "./dist/domains/text/index.js"
     },
     "./headings": {
-      "types": "./dist/headings/index.d.ts",
-      "import": "./dist/headings/index.js"
+      "types": "./dist/domains/headings/index.d.ts",
+      "import": "./dist/domains/headings/index.js"
     },
     "./url": {
-      "types": "./dist/url/index.d.ts",
-      "import": "./dist/url/index.js"
+      "types": "./dist/domains/url/index.d.ts",
+      "import": "./dist/domains/url/index.js"
     },
     "./serp": {
-      "types": "./dist/serp/index.d.ts",
-      "import": "./dist/serp/index.js"
+      "types": "./dist/domains/serp/index.d.ts",
+      "import": "./dist/domains/serp/index.js"
+    },
+    "./html": {
+      "types": "./dist/domains/html/index.d.ts",
+      "import": "./dist/domains/html/index.js"
     }
   },
   "files": [
     "dist",
+    "docs",
     "README.md",
     "LICENSE"
   ],
@@ -40,10 +45,36 @@
   },
   "keywords": [
     "seo",
+    "seo-tools",
+    "seo-utilities",
+    "on-page-seo",
+    "content-seo",
+    "technical-seo",
+    "serp",
+    "meta-title",
+    "meta-description",
+    "slug",
     "slugify",
-    "text",
-    "content",
-    "web"
+    "permalink",
+    "keyword-density",
+    "reading-time",
+    "headings",
+    "heading-structure",
+    "url-normalize",
+    "canonical-url",
+    "utm",
+    "utm-builder",
+    "tracking-params",
+    "html-cleaner",
+    "link-analysis",
+    "internal-links",
+    "cms",
+    "content-editor",
+    "typescript",
+    "javascript",
+    "esm",
+    "tree-shakeable",
+    "zero-dependencies"
   ],
   "author": "João Santos",
   "license": "MIT",

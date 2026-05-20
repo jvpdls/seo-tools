@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { describe, test } from 'node:test';
 
-import { analyzeHeadings } from '../src/index.js';
+import { analyzeHeadings, extractHeadings } from '../src/index.js';
 
 describe('analyzeHeadings', () => {
   test('extracts headings in order and detects a valid hierarchy', () => {
@@ -171,5 +171,49 @@ describe('analyzeHeadings', () => {
       },
     ]);
     assert.deepEqual(result.warningCodes, ['SKIPPED_HEADING_LEVEL']);
+  });
+});
+
+describe('extractHeadings', () => {
+  test('extracts headings in document order', () => {
+    const headings = extractHeadings(
+      '<h1>Main</h1><h2>Section</h2><h3>Subsection</h3>',
+    );
+
+    assert.deepEqual(headings, [
+      { level: 1, text: 'Main' },
+      { level: 2, text: 'Section' },
+      { level: 3, text: 'Subsection' },
+    ]);
+  });
+
+  test('decodes HTML entities and strips nested tags from heading text', () => {
+    const headings = extractHeadings(
+      '<h1>SEO <span>Tools</span> &amp; Content</h1><h2>Tom&#39;s checklist&nbsp;2026</h2>',
+    );
+
+    assert.deepEqual(headings, [
+      { level: 1, text: 'SEO Tools & Content' },
+      { level: 2, text: "Tom's checklist 2026" },
+    ]);
+  });
+
+  test('ignores headings that are empty after stripping nested markup', () => {
+    const headings = extractHeadings(
+      '<h1><span> </span></h1><h2>Useful section</h2>',
+    );
+
+    assert.deepEqual(headings, [{ level: 2, text: 'Useful section' }]);
+  });
+
+  test('matches heading tags case-insensitively and accepts attributes', () => {
+    const headings = extractHeadings(
+      '<H1 class="title">Main title</H1><h2 id="intro">Intro</h2>',
+    );
+
+    assert.deepEqual(headings, [
+      { level: 1, text: 'Main title' },
+      { level: 2, text: 'Intro' },
+    ]);
   });
 });

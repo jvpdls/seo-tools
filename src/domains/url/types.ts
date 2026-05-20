@@ -19,3 +19,25 @@ export type NormalizedUrlResult = {
   urlLowercased: boolean;
   hashRemoved: boolean;
 };
+
+export type UtmParams = {
+  utm_source: string;
+  utm_medium: string;
+  utm_campaign: string;
+  utm_term?: string;
+  utm_content?: string;
+  [key: string]: string | undefined;
+};
+
+export type BuildUtmUrlOptions = {
+  url: string;
+  params: UtmParams;
+  overwriteExisting?: boolean;
+};
+
+export type BuildUtmUrlResult = {
+  originalUrl: string;
+  builtUrl: string;
+  addedParams: string[];
+  skippedParams: string[];
+};

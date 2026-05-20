@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { describe, test } from 'node:test';
 
-import { countTextMetrics, createSlug } from '../src/index.js';
+import { analyzeKeywordDensity, countTextMetrics, createSlug } from '../src/index.js';
 import { getStopwordsForLanguage } from '../src/utils/text.js';
 
 const assertWordsAreStopwords = (
@@ -94,6 +94,135 @@ describe('createSlug', () => {
 
     assert.equal(result.slug, 'write-clear');
     assert.deepEqual(result.warningCodes, ['MAX_WORDS_APPLIED']);
+  });
+});
+
+describe('analyzeKeywordDensity', () => {
+  test('counts keyword occurrences with accent-insensitive token matching', () => {
+    const result = analyzeKeywordDensity({
+      text: 'Estratégias de SEO para SEO local em São Paulo.',
+      keywords: ['SEO', 'sao paulo'],
+    });
+
+    assert.equal(result.totalWords, 9);
+    assert.deepEqual(result.keywords, [
+      {
+        keyword: 'SEO',
+        occurrences: 2,
+        density: 22.22,
+        warningCodes: ['DENSITY_TOO_HIGH'],
+      },
+      {
+        keyword: 'sao paulo',
+        occurrences: 1,
+        density: 11.11,
+        warningCodes: ['DENSITY_TOO_HIGH'],
+      },
+    ]);
+    assert.deepEqual(result.warningCodes, []);
+  });
+
+  test('matches multi-word keywords as phrases', () => {
+    const result = analyzeKeywordDensity({
+      text: 'Keyword density helps measure keyword density over time.',
+      keywords: ['keyword density'],
+    });
+
+    assert.equal(result.totalWords, 8);
+    assert.deepEqual(result.keywords, [
+      {
+        keyword: 'keyword density',
+        occurrences: 2,
+        density: 25,
+        warningCodes: ['DENSITY_TOO_HIGH'],
+      },
+    ]);
+  });
+
+  test('strips HTML before analysis when stripHtml is enabled', () => {
+    const result = analyzeKeywordDensity({
+      text: '<p>SEO <strong>tools</strong> for teams</p>',
+      keywords: ['seo tools'],
+      stripHtml: true,
+    });
+
+    assert.equal(result.totalWords, 4);
+    assert.deepEqual(result.keywords, [
+      {
+        keyword: 'seo tools',
+        occurrences: 1,
+        density: 25,
+        warningCodes: ['DENSITY_TOO_HIGH'],
+      },
+    ]);
+  });
+
+  test('reports KEYWORD_NOT_FOUND and configurable density warnings', () => {
+    const result = analyzeKeywordDensity({
+      text: 'A short article about content strategy.',
+      keywords: ['content strategy', 'backlinks'],
+      thresholds: {
+        minDensity: 5,
+        maxDensity: 20,
+      },
+    });
+
+    assert.deepEqual(result.keywords, [
+      {
+        keyword: 'content strategy',
+        occurrences: 1,
+        density: 16.67,
+        warningCodes: [],
+      },
+      {
+        keyword: 'backlinks',
+        occurrences: 0,
+        density: 0,
+        warningCodes: ['KEYWORD_NOT_FOUND'],
+      },
+    ]);
+  });
+
+  test('reports DENSITY_TOO_LOW when density is below the minimum threshold', () => {
+    const result = analyzeKeywordDensity({
+      text: [
+        'This guide explains how to structure articles for readability and search intent.',
+        'It focuses on headings, internal links, and useful examples for readers.',
+      ].join(' '),
+      keywords: ['readability'],
+      thresholds: {
+        minDensity: 5,
+        maxDensity: 10,
+      },
+    });
+
+    assert.equal(result.keywords[0]?.occurrences, 1);
+    assert.equal(result.keywords[0]?.density, 4.35);
+    assert.deepEqual(result.keywords[0]?.warningCodes, ['DENSITY_TOO_LOW']);
+  });
+
+  test('returns EMPTY_INPUT when text is empty after normalization', () => {
+    const result = analyzeKeywordDensity({
+      text: '   ',
+      keywords: ['seo'],
+    });
+
+    assert.deepEqual(result, {
+      totalWords: 0,
+      keywords: [],
+      warningCodes: ['EMPTY_INPUT'],
+    });
+  });
+
+  test('returns NO_KEYWORDS when the keyword list is empty', () => {
+    const result = analyzeKeywordDensity({
+      text: 'Valid article body.',
+      keywords: ['', '   '],
+    });
+
+    assert.equal(result.totalWords, 3);
+    assert.deepEqual(result.keywords, []);
+    assert.deepEqual(result.warningCodes, ['NO_KEYWORDS']);
   });
 });
 

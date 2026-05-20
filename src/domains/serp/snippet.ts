@@ -1,14 +1,17 @@
-import { normalizeTextToken } from '../utils/text.js';
+import { normalizeTextToken } from '../../utils/text.js';
+
+import {
+  TITLE_MAX_IDEAL_CHARACTERS,
+  TITLE_MIN_CHARACTERS,
+} from './constants.js';
 
 import type {
-  AnalyzeSeoSnippetOptions,
-  SeoSnippetAnalysis,
+  AnalyzeSerpSnippetOptions,
+  SerpSnippetAnalysis,
   SnippetStatus,
   SnippetWarningCode,
 } from './types.js';
 
-const TITLE_MIN_CHARACTERS = 30;
-const TITLE_MAX_IDEAL_CHARACTERS = 54;
 const DESCRIPTION_MIN_CHARACTERS = 120;
 const DESCRIPTION_MAX_IDEAL_CHARACTERS = 154;
 
@@ -66,11 +69,27 @@ const getDescriptionWarningCodes = (
   return warningCodes;
 };
 
-export const analyzeSeoSnippet = ({
+/**
+ * Evaluates a SERP title and meta description against SEO length ranges.
+ *
+ * If `keyword` is provided, also validates keyword presence in both title and
+ * description with case- and accent-insensitive matching.
+ *
+ * @param options - Snippet analysis input.
+ * @returns Per-part diagnostics and an overall status.
+ *
+ * @example
+ * analyzeSerpSnippet({
+ *   title: 'Project Brief Template for Agencies',
+ *   description: 'Use this project brief template to align scope and timelines.',
+ *   keyword: 'project brief',
+ * });
+ */
+export const analyzeSerpSnippet = ({
   title,
   description,
   keyword,
-}: AnalyzeSeoSnippetOptions): SeoSnippetAnalysis => {
+}: AnalyzeSerpSnippetOptions): SerpSnippetAnalysis => {
   const titleStatus = getSnippetStatus(
     title.length,
     TITLE_MIN_CHARACTERS,
