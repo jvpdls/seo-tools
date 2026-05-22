@@ -1,4 +1,4 @@
-# Technical & On-Page SEO Utilities | @jvpdls/seo-tools
+# Technical & On-Page SEO Utilities
 
 Type-safe, dependency-free SEO utilities for JavaScript and TypeScript — slugs, SERP checks, heading audits, URL normalization, and HTML link analysis.
 
@@ -107,6 +107,17 @@ Import only what you need via [domain subpaths](#domain-imports) or the [full AP
 | [`cleanHtml`](./docs/html.md#cleanhtmloptions) | Strip classes, ids, inline styles |
 | [`countLinks`](./docs/html.md#countlinksoptions) | Internal, external, nofollow link counts |
 
+### Schema · [schema.md](./docs/schema.md)
+
+| Function | One-line purpose |
+| --- | --- |
+| [`buildWebsiteSchema`](./docs/schema.md#buildwebsiteschemaoptions) | `WebSite` JSON-LD graph node |
+| [`buildWebPageSchema`](./docs/schema.md#buildwebpageschemaoptions) | `WebPage` linked to a site |
+| [`buildArticleSchema`](./docs/schema.md#buildarticleschemaoptions) | `Article` / `BlogPosting` / etc. |
+| [`buildFaqPageSchema`](./docs/schema.md#buildfaqpageschemaoptions) | `FAQPage` Q&A list |
+| [`buildAboutPageSchema`](./docs/schema.md#buildaboutpageschemaoptions) | `AboutPage` + person |
+| [`buildContactPageSchema`](./docs/schema.md#buildcontactpageschemaoptions) | `ContactPage` + contact point |
+
 Full reference: **[docs/](./docs/README.md)**
 
 ## Domain imports
@@ -119,6 +130,7 @@ import { analyzeSerpSnippet } from '@jvpdls/seo-tools/serp';
 import { analyzeHeadings } from '@jvpdls/seo-tools/headings';
 import { normalizeUrl } from '@jvpdls/seo-tools/url';
 import { countLinks } from '@jvpdls/seo-tools/html';
+import { buildWebsiteSchema } from '@jvpdls/seo-tools/schema';
 ```
 
 ## Why these utilities?
@@ -136,10 +148,17 @@ import { countLinks } from '@jvpdls/seo-tools/html';
 | Campaign links | `buildUtmUrl` |
 | Sanitize pasted HTML | `cleanHtml` |
 | Internal linking reports | `countLinks` |
+| JSON-LD for core page types | `buildWebsiteSchema`, `buildArticleSchema`, … |
 
 All analyzers return **`warningCodes`** — stable string enums you localize in the app layer, not in the library.
 
 ## Changelog
+
+### 0.3.0
+- Schema: added JSON-LD utilities
+- Schema: added builders for `WebSite`, `WebPage`, `Article` (& variations), `FAQPage`, `AboutPage`, and `ContactPage`
+- Docs: added schema examples and API reference
+- Development: installed and configured eslint
 
 ### 0.2.1
 
@@ -153,6 +172,14 @@ All analyzers return **`warningCodes`** — stable string enums you localize in 
 - URL: `buildUtmUrl`
 - SERP: `buildPageTitle`
 - Per-domain API docs in [`docs/`](./docs/README.md)
+
+## 0.1.1
+
+- Internal cleanup and small package adjustments
+
+## 0.1.0
+
+- Initial release
 
 ## Development
 

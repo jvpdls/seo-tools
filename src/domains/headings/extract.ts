@@ -1,6 +1,6 @@
 import { getPlainTextFromHtml, matchHeadingTags } from '../../utils/html.js';
 
-import type { HeadingItem, HeadingLevel } from './types.js';
+import type { HeadingItem } from './types.js';
 
 /**
  * Extracts H1-H6 headings from HTML in document order.
@@ -17,7 +17,7 @@ import type { HeadingItem, HeadingLevel } from './types.js';
 export const extractHeadings = (html: string): HeadingItem[] => {
   return [...matchHeadingTags(html)]
     .map((match) => ({
-      level: match.level as HeadingLevel,
+      level: match.level,
       text: getPlainTextFromHtml(match.content),
     }))
     .filter((heading) => heading.text.length > 0);

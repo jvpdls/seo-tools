@@ -9,6 +9,7 @@ Detailed reference for each domain in `@jvpdls/seo-tools`.
 | Headings | [headings.md](./headings.md) | H1–H6 extraction and hierarchy checks |
 | URL | [url.md](./url.md) | Canonical URLs, UTM campaign links |
 | HTML | [html.md](./html.md) | Markup cleanup, link inventory |
+| Schema | [schema.md](./schema.md) | JSON-LD builders (WebSite, Article, FAQ, etc.) |
 
 All utilities are **dependency-free**, ship as **ESM**, and return **stable warning codes** you can map to any UI language.
 

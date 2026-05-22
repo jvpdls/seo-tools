@@ -1,7 +1,7 @@
 {
   "name": "@jvpdls/seo-tools",
-  "version": "0.2.1",
-  "description": "Type-safe SEO utilities for JavaScript and TypeScript: slugs, SERP meta, heading tags, keyword density, URL normalization, UTM builder, and HTML link analysis. Zero dependencies, ESM.",
+  "version": "0.3.0",
+  "description": "Type-safe SEO utilities for JavaScript and TypeScript: slugs, SERP meta, schema markup, heading tags, keyword density, URL normalization, UTM builder, and more. Zero dependencies, ESM.",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -29,6 +29,10 @@
     "./html": {
       "types": "./dist/domains/html/index.d.ts",
       "import": "./dist/domains/html/index.js"
+    },
+    "./schema": {
+      "types": "./dist/domains/schema/index.d.ts",
+      "import": "./dist/domains/schema/index.js"
     }
   },
   "files": [
@@ -41,7 +45,8 @@
   "scripts": {
     "build": "tsc",
     "test": "node --import tsx --test tests/**/*.test.ts",
-    "prepack": "npm run build"
+    "prepack": "npm run build",
+    "lint": "eslint ."
   },
   "keywords": [
     "seo",
@@ -68,6 +73,10 @@
     "html-cleaner",
     "link-analysis",
     "internal-links",
+    "json-ld",
+    "structured-data",
+    "schema-markup",
+    "schema-org",
     "cms",
     "content-editor",
     "typescript",
@@ -93,8 +102,12 @@
     "node": ">=18"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@types/node": "^25.8.0",
+    "eslint": "^10.4.0",
+    "globals": "^17.6.0",
     "tsx": "^4.22.0",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.59.4"
   }
 }
