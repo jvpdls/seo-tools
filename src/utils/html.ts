@@ -22,6 +22,14 @@ type HeadingTagMatch = HtmlTagMatch & {
   level: 1 | 2 | 3 | 4 | 5 | 6;
 };
 
+type SingleHtmlTagMatch = {
+  tagName: string;
+  attributes: string;
+  fullMatch: string;
+  index: number;
+  selfClosing: boolean;
+};
+
 type HtmlAttribute = {
   name: string;
   value?: string;
@@ -167,6 +175,12 @@ const createTagPattern = (tagName: string): RegExp => {
   );
 };
 
+const createSingleTagPattern = (tagName: string): RegExp => {
+  const escapedTagName = tagName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+  return new RegExp(`<${escapedTagName}\\b([^>]*)\\s*(\\/?)>`, 'gi');
+};
+
 export function* matchHtmlTags(html: string, tagName: string): Generator<HtmlTagMatch> {
   const pattern = createTagPattern(tagName);
   const normalizedTagName = tagName.toLowerCase();
@@ -178,6 +192,24 @@ export function* matchHtmlTags(html: string, tagName: string): Generator<HtmlTag
       content: match[2] ?? '',
       fullMatch: match[0],
       index: match.index ?? 0,
+    };
+  }
+}
+
+export function* matchSingleHtmlTags(
+  html: string,
+  tagName: string,
+): Generator<SingleHtmlTagMatch> {
+  const pattern = createSingleTagPattern(tagName);
+  const normalizedTagName = tagName.toLowerCase();
+
+  for (const match of html.matchAll(pattern)) {
+    yield {
+      tagName: normalizedTagName,
+      attributes: match[1] ?? '',
+      fullMatch: match[0],
+      index: match.index ?? 0,
+      selfClosing: (match[2] ?? '') === '/',
     };
   }
 }
@@ -196,3 +228,18 @@ export function* matchHeadingTags(html: string): Generator<HeadingTagMatch> {
     };
   }
 }
+
+export const getHtmlAttributeValue = (
+  attributeString: string,
+  attributeName: string,
+): string | undefined => {
+  const normalizedAttributeName = normalizeAttributeName(attributeName);
+
+  for (const attribute of parseHtmlAttributes(attributeString)) {
+    if (normalizeAttributeName(attribute.name) === normalizedAttributeName) {
+      return attribute.value;
+    }
+  }
+
+  return undefined;
+};

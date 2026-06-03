@@ -1,7 +1,7 @@
 {
   "name": "@jvpdls/seo-tools",
-  "version": "0.3.0",
-  "description": "Type-safe SEO utilities for JavaScript and TypeScript: slugs, SERP meta, schema markup, heading tags, keyword density, URL normalization, UTM builder, and more. Zero dependencies, ESM.",
+  "version": "0.4.0",
+  "description": "Type-safe SEO utilities for JavaScript and TypeScript: slugs, SERP meta, metadata extraction, image audits, robots.txt analysis, sitemap parsing, schema markup, URL normalization, and more. Zero dependencies, ESM.",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -30,6 +30,22 @@
       "types": "./dist/domains/html/index.d.ts",
       "import": "./dist/domains/html/index.js"
     },
+    "./meta": {
+      "types": "./dist/domains/meta/index.d.ts",
+      "import": "./dist/domains/meta/index.js"
+    },
+    "./images": {
+      "types": "./dist/domains/images/index.d.ts",
+      "import": "./dist/domains/images/index.js"
+    },
+    "./robots": {
+      "types": "./dist/domains/robots/index.d.ts",
+      "import": "./dist/domains/robots/index.js"
+    },
+    "./sitemap": {
+      "types": "./dist/domains/sitemap/index.d.ts",
+      "import": "./dist/domains/sitemap/index.js"
+    },
     "./schema": {
       "types": "./dist/domains/schema/index.d.ts",
       "import": "./dist/domains/schema/index.js"
@@ -56,8 +72,12 @@
     "content-seo",
     "technical-seo",
     "serp",
+    "serp-analysis",
     "meta-title",
     "meta-description",
+    "meta-tags",
+    "canonical-tag",
+    "meta-robots",
     "slug",
     "slugify",
     "permalink",
@@ -73,6 +93,15 @@
     "html-cleaner",
     "link-analysis",
     "internal-links",
+    "image-seo",
+    "image-alt",
+    "robots",
+    "robots-txt",
+    "crawl-directives",
+    "sitemap",
+    "sitemap-parser",
+    "xml-sitemap",
+    "indexability",
     "json-ld",
     "structured-data",
     "schema-markup",

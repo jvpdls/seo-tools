@@ -43,6 +43,114 @@ export type {
   CountLinksWarningCode,
 } from './domains/html/index.js';
 
+export {
+  analyzeMetaTags,
+  extractCanonical,
+  extractMetaRobots,
+  extractMetaTags,
+} from './domains/meta/index.js';
+export type {
+  AnalyzeMetaTagsOptions,
+  CanonicalExtractionResult,
+  CanonicalWarningCode,
+  ExtractCanonicalOptions,
+  ExtractMetaRobotsOptions,
+  ExtractMetaTagsOptions,
+  ExtractMetaTagsResult,
+  ExtractMetaTagsWarningCode,
+  MetaAnalysisWarningCode,
+  MetaRobotsExtractionResult,
+  MetaRobotsWarningCode,
+  MetaTagAttribute,
+  MetaTagEntry,
+  MetaTagsAnalysis,
+} from './domains/meta/index.js';
+
+export {
+  analyzeImageAlts,
+  analyzeImageDimensions,
+  analyzeImageLoading,
+  analyzeImages,
+  extractImages,
+} from './domains/images/index.js';
+export type {
+  AnalyzeImageAltsOptions,
+  AnalyzeImageAltsResult,
+  AnalyzeImageDimensionsOptions,
+  AnalyzeImageDimensionsResult,
+  AnalyzeImageLoadingOptions,
+  AnalyzeImageLoadingResult,
+  AnalyzeImagesOptions,
+  ExtractImagesOptions,
+  ExtractImagesResult,
+  ExtractImagesWarningCode,
+  ImageAltWarningCode,
+  ImageAnalysisWarningCode,
+  ImageDimensionWarningCode,
+  ImageItem,
+  ImageLoadingWarningCode,
+  ImagesAnalysis,
+} from './domains/images/index.js';
+
+export {
+  analyzeRobotsUrls,
+  analyzeRobotsRules,
+  extractRobotsRules,
+  extractRobotsSitemaps,
+  matchRobotsPath,
+} from './domains/robots/index.js';
+export type {
+  AnalyzeRobotsUrlsOptions,
+  AnalyzeRobotsUrlsResult,
+  AnalyzeRobotsUrlsWarningCode,
+  AnalyzeRobotsRulesOptions,
+  AnalyzeRobotsRulesResult,
+  AnalyzeRobotsWarningCode,
+  AnalyzedRobotsUrl,
+  ExtractRobotsRulesOptions,
+  ExtractRobotsRulesResult,
+  ExtractRobotsRulesWarningCode,
+  ExtractRobotsSitemapsOptions,
+  ExtractRobotsSitemapsResult,
+  ExtractRobotsSitemapsWarningCode,
+  MatchRobotsPathOptions,
+  MatchRobotsPathResult,
+  MatchRobotsPathWarningCode,
+  RobotsGroup,
+  RobotsUrlAnalysisWarningCode,
+  RobotsUrlObservationCode,
+  RobotsRule,
+  RobotsRuleDirective,
+} from './domains/robots/index.js';
+
+export {
+  analyzeSitemap,
+  detectSitemapType,
+  extractChildSitemaps,
+  extractSitemapMetadata,
+  extractSitemapUrls,
+} from './domains/sitemap/index.js';
+export type {
+  AnalyzeSitemapOptions,
+  AnalyzeSitemapWarningCode,
+  DetectSitemapTypeOptions,
+  DetectSitemapTypeResult,
+  DetectSitemapTypeWarningCode,
+  ExtractChildSitemapsOptions,
+  ExtractChildSitemapsResult,
+  ExtractChildSitemapsWarningCode,
+  ExtractSitemapMetadataOptions,
+  ExtractSitemapMetadataResult,
+  ExtractSitemapMetadataWarningCode,
+  ExtractSitemapUrlsOptions,
+  ExtractSitemapUrlsResult,
+  ExtractSitemapUrlsWarningCode,
+  SitemapAnalysis,
+  SitemapChildEntry,
+  SitemapType,
+  SitemapUrlEntry,
+} from './domains/sitemap/index.js';
+
 export { analyzeSerpSnippet, buildPageTitle } from './domains/serp/index.js';
 export type {
   AnalyzeSerpSnippetOptions,
