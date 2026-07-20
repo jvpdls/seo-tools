@@ -1,6 +1,6 @@
 {
   "name": "@jvpdls/seo-tools",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "Type-safe SEO utilities for JavaScript and TypeScript: slugs, SERP meta, metadata extraction, image audits, robots.txt analysis, sitemap parsing, schema markup, URL normalization, and more. Zero dependencies, ESM.",
   "type": "module",
   "main": "./dist/index.js",

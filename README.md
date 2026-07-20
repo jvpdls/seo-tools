@@ -232,6 +232,10 @@ All analyzers return **`warningCodes`** — stable string enums you localize in 
 
 ## Changelog
 
+### 0.4.2
+
+- Docs: fixed the changelog heading hierarchy
+
 ### 0.4.1
 
 - Images: recover original sources from Next.js `/_next/image` URLs, including `overrideSrc` output
@@ -264,11 +268,11 @@ All analyzers return **`warningCodes`** — stable string enums you localize in 
 - SERP: `buildPageTitle`
 - Per-domain API docs in [`docs/`](./docs/README.md)
 
-## 0.1.1
+### 0.1.1
 
 - Internal cleanup and small package adjustments
 
-## 0.1.0
+### 0.1.0
 
 - Initial release
 
