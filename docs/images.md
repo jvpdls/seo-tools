@@ -22,10 +22,15 @@ Returns a typed list of `<img>` elements and their most useful attributes.
 {
   images: Array<{
     src: string | null;
+    originalSrc: string | null;
+    framework: 'next' | null;
+    optimizer: 'next' | null;
     alt: string | null;
     width: number | null;
     height: number | null;
+    fill: boolean;
     loading: string | null;
+    fetchPriority: string | null;
     decoding: string | null;
     title: string | null;
     srcset: string | null;
@@ -35,6 +40,13 @@ Returns a typed list of `<img>` elements and their most useful attributes.
   warningCodes: ExtractImagesWarningCode[];
 }
 ```
+
+For HTML rendered by `next/image`, `src` keeps the browser-facing optimizer
+URL while `originalSrc` contains the decoded source from the optimizer's `url`
+parameter. `framework` identifies markup emitted by Next.js, and `optimizer`
+identifies URLs served through its built-in `/_next/image` optimizer. For
+regular images, `originalSrc` is the same as `src` and both identifier fields
+are `null`.
 
 ### Warning codes
 
@@ -73,7 +85,7 @@ Counts missing, empty, and duplicate `alt` attributes.
 
 ## `analyzeImageDimensions(options)`
 
-Checks whether images declare `width` and `height`, and whether those dimensions are valid positive numbers.
+Checks whether images declare `width` and `height`, and whether those dimensions are valid positive numbers. Next.js images rendered with `data-nimg="fill"` are treated as dimensionally valid because their dimensions come from the parent container.
 
 ### Result
 
@@ -98,7 +110,7 @@ Checks whether images declare `width` and `height`, and whether those dimensions
 
 ## `analyzeImageLoading(options)`
 
-Counts `loading="lazy"`, `loading="eager"`, and missing `loading` attributes.
+Counts `loading="lazy"`, `loading="eager"`, and missing `loading` attributes. A Next.js image without `loading` (for example, one using `preload`) or any image with `fetchpriority="high"` is counted as eager instead of missing.
 
 ### Result
 
@@ -124,6 +136,31 @@ Counts `loading="lazy"`, `loading="eager"`, and missing `loading` attributes.
 ## `analyzeImages(options)`
 
 Runs the main image checks in one call and returns the original extracted list for downstream automation.
+
+### Next.js example
+
+```ts
+const result = analyzeImages({
+  html: `
+    <img
+      src="/_next/image?url=%2Fhero.jpg&amp;w=1200&amp;q=75"
+      srcset="/_next/image?url=%2Fhero.jpg&amp;w=640&amp;q=75 1x,
+              /_next/image?url=%2Fhero.jpg&amp;w=1200&amp;q=75 2x"
+      alt="Hero"
+      width="1200"
+      height="630"
+      data-nimg="1"
+      fetchpriority="high"
+    />
+  `,
+});
+
+result.images[0]?.src;
+// "/_next/image?url=%2Fhero.jpg&w=1200&q=75"
+
+result.images[0]?.originalSrc;
+// "/hero.jpg"
+```
 
 ### Result
 

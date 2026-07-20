@@ -232,7 +232,13 @@ All analyzers return **`warningCodes`** — stable string enums you localize in 
 
 ## Changelog
 
+### 0.4.1
+
+- Images: recover original sources from Next.js `/_next/image` URLs, including `overrideSrc` output
+- Images: recognize Next.js `fill`, preload, and high fetch priority without false missing-dimension or missing-loading warnings
+
 ### 0.4.0
+
 - Meta: added metadata extraction and audits (`extractMetaTags`, `extractCanonical`, `extractMetaRobots`, `analyzeMetaTags`)
 - Images: added `<img>` extraction and image audits (`extractImages`, `analyzeImageAlts`, `analyzeImageDimensions`, `analyzeImageLoading`, `analyzeImages`)
 - Robots: added `robots.txt` parsing, sitemap extraction, path matching, and batch URL audits (`extractRobotsRules`, `extractRobotsSitemaps`, `analyzeRobotsRules`, `analyzeRobotsUrls`, `matchRobotsPath`)

@@ -87,8 +87,10 @@ export type {
   ImageAltWarningCode,
   ImageAnalysisWarningCode,
   ImageDimensionWarningCode,
+  ImageFramework,
   ImageItem,
   ImageLoadingWarningCode,
+  ImageOptimizer,
   ImagesAnalysis,
 } from './domains/images/index.js';
 

@@ -105,6 +105,10 @@ export const analyzeImageDimensions = ({
   let invalidDimensions = 0;
 
   for (const image of images) {
+    if (image.fill) {
+      continue;
+    }
+
     const hasMissingDimension = image.width === null || image.height === null;
 
     if (hasMissingDimension) {
@@ -159,6 +163,11 @@ export const analyzeImageLoading = ({
 
   for (const image of images) {
     if (image.loading === null || image.loading.length === 0) {
+      if (image.fetchPriority === 'high' || image.framework === 'next') {
+        eager += 1;
+        continue;
+      }
+
       missingLoading += 1;
       continue;
     }

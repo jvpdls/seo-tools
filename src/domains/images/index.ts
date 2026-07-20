@@ -19,7 +19,9 @@ export type {
   ImageAltWarningCode,
   ImageAnalysisWarningCode,
   ImageDimensionWarningCode,
+  ImageFramework,
   ImageItem,
   ImageLoadingWarningCode,
+  ImageOptimizer,
   ImagesAnalysis,
 } from './types.js';

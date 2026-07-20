@@ -20,12 +20,21 @@ export type ImageAnalysisWarningCode =
   | ImageDimensionWarningCode
   | ImageLoadingWarningCode;
 
+export type ImageFramework = 'next';
+
+export type ImageOptimizer = 'next';
+
 export type ImageItem = {
   src: string | null;
+  originalSrc: string | null;
+  framework: ImageFramework | null;
+  optimizer: ImageOptimizer | null;
   alt: string | null;
   width: number | null;
   height: number | null;
+  fill: boolean;
   loading: string | null;
+  fetchPriority: string | null;
   decoding: string | null;
   title: string | null;
   srcset: string | null;
